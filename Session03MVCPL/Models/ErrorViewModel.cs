@@ -6,6 +6,7 @@ namespace Session03MVCPL.Models
     {
         public string RequestId { get; set; }
 
+
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }
