@@ -11,7 +11,7 @@ namespace Session03MVCEDAL.Models
     {
         public int Id { get; set; }
         //[Required(ErrorMessage = "Name Is Required Ya 7oda")] // This Error Message Is Written In ViewModel
-        public int Code { get; set; }
+        public string Code { get; set; }
         //[Required] // We Don't Write Data Annotation But We Write Fluent API
         public string Name { get; set; }
         public DateTime DateOfCreation { get; set; }
