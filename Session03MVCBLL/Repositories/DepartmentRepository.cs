@@ -13,7 +13,7 @@ namespace Session03MVCBLL.Repositories
 {
     public class DepartmentRepository : IDepartmentRepositories
     {
-        private readonly DbContextApplications _dbcontext;
+        private readonly DbContextApplications _dbcontext; // Null
         
         /// if we don't use Dependency Injection
         ///public DepartmentRepository()

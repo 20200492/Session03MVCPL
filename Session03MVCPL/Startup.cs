@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Session03MVCBLL.Interfaces;
 using Session03MVCEDAL.Data;
 using System;
 using System.Collections.Generic;
@@ -31,15 +32,16 @@ namespace Session03MVCPL
             ///services.AddMvc();                  // Register Built-In Services Required by MVC,API and Razor-Pages
 
             ///services.AddTransient<DbContextApplications>(); // CLR Creat More Than Object From DbContextApplications Per Request ==> This Lead To May be Open More Than Connection In Same Request
-            ///services.AddScoped<DbContextApplications>();    // CLR Creat One Object From DbContextApplications Per Request
+            ///services.AddSingleton<DbContextApplications>(); // CLR Creat One Object From DbContextApplications Per Session 
 
-            //services.AddSingleton<DbContextApplications>(); // CLR Creat One Object From DbContextApplications Per Session => The BestCase 
-            //services.AddSingleton<DbContextOptions>();     // CLR Creat One Object From DbContextOptions Per Session => The BestCase  
+            //services.AddScoped<DbContextApplications>();    // CLR Creat One Object From DbContextApplications Per Request => The BestChoise
+            //services.AddScoped<DbContextOptions>();        //  CLR Creat One Object From DbContextOptions Per Request => The BestChoise  
 
             services.AddDbContext<DbContextApplications>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddScoped<IDepartmentRepositories, IDepartmentRepositories>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

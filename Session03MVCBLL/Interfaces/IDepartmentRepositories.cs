@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Session03MVCBLL.Interfaces
 {
-    internal interface IDepartmentRepositories
+    public interface IDepartmentRepositories
     {
         IEnumerable<Department> GetAll();
         Department GetById(int id);
