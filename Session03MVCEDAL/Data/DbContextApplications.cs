@@ -10,12 +10,17 @@ using System.Threading.Tasks;
 
 namespace Session03MVCEDAL.Data
 {
-    internal class DbContextApplications : DbContext
+    public class DbContextApplications : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public DbContextApplications(DbContextOptions<DbContextApplications> options) :base(options)
         {
-            optionsBuilder.UseSqlServer("Server =.; Database = MVCApplicationG02; Trusted_Connection = True; MultipleActiveResultSets = False"); 
+            
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server =.; Database = MVCApplicationG02; Trusted_Connection = True; MultipleActiveResultSets = False"); 
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
