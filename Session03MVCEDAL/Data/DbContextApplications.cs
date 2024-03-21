@@ -12,14 +12,6 @@ namespace Session03MVCEDAL.Data
 {
     public class DbContextApplications : DbContext
     {
-        // In Case We Use Dependancy Injection:
-        // We don't Override OnConfiguring and make It Implementation in Startup Class
-        // We don't make Parameterless Constructor but Make Constructor like this :
-        public DbContextApplications(DbContextOptions<DbContextApplications> options) :base(options)
-        {
-            
-        }
-
         /// In Case We don't Use Dependancy Injection
         ///public DbContextApplications():base()
         ///{ 
@@ -28,11 +20,19 @@ namespace Session03MVCEDAL.Data
         ///{
         ///    optionsBuilder.UseSqlServer("Server =.; Database = MVCApplicationG02; Trusted_Connection = True; MultipleActiveResultSets = False"); 
         ///}
-
+       
+        // In Case We Use Dependancy Injection:
+        // We don't Override OnConfiguring and make It Implementation in Startup Class
+        // We don't make Parameterless Constructor but Make Constructor like this :
+        public DbContextApplications(DbContextOptions<DbContextApplications> options) :base(options)
+        {
+            
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.ApplyConfiguration<Department>(new DepartmentConfigrations());
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+        public DbSet<Department> Departments { get; set; }
     }
 }

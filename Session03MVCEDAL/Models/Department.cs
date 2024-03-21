@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Session03MVCEDAL.Models
 {
-    internal class Department
+    public class Department
     {
         public int Id { get; set; }
         //[Required(ErrorMessage = "Name Is Required Ya 7oda")] // This Error Message Is Written In ViewModel
