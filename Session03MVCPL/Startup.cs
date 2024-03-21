@@ -15,12 +15,12 @@ namespace Session03MVCPL
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -38,8 +38,7 @@ namespace Session03MVCPL
 
             services.AddDbContext<DbContextApplications>(options =>
             {
-              options.UseSqlServer("Server =.; Database = MVCApplicationG02; Trusted_Connection = True; MultipleActiveResultSets = False")
-
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
         }
 
