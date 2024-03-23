@@ -98,6 +98,31 @@ namespace Session03MVCPL.Controllers
             }
 
         }
+        public IActionResult Delete(int? Id )
+        {
+            return Details(Id, "Delete");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Department department)
+        {
+            try
+            {
+                _departmentRepo.Delete(department);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Log Exception 
+                // Friendly Message
+
+                if (_ev.IsDevelopment())
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                else
+                    ModelState.AddModelError(string.Empty, "An Error Has Occured during Updating the Department");
+                return View(department);
+            }
+        }
 
     }
 }
