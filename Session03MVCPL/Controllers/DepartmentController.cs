@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Session03MVCBLL.Interfaces;
 using Session03MVCBLL.Repositories;
 using Session03MVCEDAL.Data;
 using Session03MVCEDAL.Models;
+using System;
 
 namespace Session03MVCPL.Controllers
 {
@@ -11,10 +14,11 @@ namespace Session03MVCPL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepositories _departmentRepo; // Null
-
-        public DepartmentController(IDepartmentRepositories departmentRepo) // Ask CLR for Creating an Object From Class Implementing IDepartmentRepositories
+        public IWebHostEnvironment _ev { get; }
+        public DepartmentController(IDepartmentRepositories departmentRepo, IWebHostEnvironment ev) // Ask CLR for Creating an Object From Class Implementing IDepartmentRepositories
         {
             _departmentRepo = departmentRepo;
+            _ev = ev;
         }
         public IActionResult Index()
         {
@@ -39,9 +43,9 @@ namespace Session03MVCPL.Controllers
             }
             return View();
         }
-        public IActionResult Details(int? Id)
+        public IActionResult Details(int? Id,string ViewName ="Details")
         {
-            if (Id is null)
+            if (!Id.HasValue)
                 return BadRequest(); // 400
 
             var department = _departmentRepo.GetById(Id.Value);
@@ -50,6 +54,44 @@ namespace Session03MVCPL.Controllers
                 return NotFound(); // 404
 
             return View(department);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? Id)
+        {
+            ///if(!Id.HasValue)
+            ///    return BadRequest();
+            ///var department = _departmentRepo.GetById(Id.Value);
+            ///if(department is null)
+            ///    return NotFound();
+            ///return View(department);
+            
+            return Details(Id,"Edit");
+        }
+        [HttpPost]
+        public IActionResult Edit(Department department)
+        {
+            if (!ModelState.IsValid)
+                return View(department);
+
+            try
+            {
+                _departmentRepo.Update(department);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Log Exception 
+                // Friendly Message
+
+                if (_ev.IsDevelopment())
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                else
+                    ModelState.AddModelError(string.Empty, "An Error Has Occured during Updating the Department");
+
+                return View(department);
+            }
+
         }
 
     }
