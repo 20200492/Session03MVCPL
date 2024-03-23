@@ -39,6 +39,18 @@ namespace Session03MVCPL.Controllers
             }
             return View();
         }
+        public IActionResult Details(int? Id)
+        {
+            if (Id is null)
+                return BadRequest(); // 400
+
+            var department = _departmentRepo.GetById(Id.Value);
+
+            if (department is null)
+                return NotFound(); // 404
+
+            return View(department);
+        }
 
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Session03MVCBLL.Interfaces;
+using Session03MVCBLL.Repositories;
 using Session03MVCEDAL.Data;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace Session03MVCPL
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddScoped<IDepartmentRepositories, IDepartmentRepositories>();
+            services.AddScoped<IDepartmentRepositories, DepartmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
