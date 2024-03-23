@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Hosting;
 using Session03MVCBLL.Interfaces;
 using Session03MVCBLL.Repositories;
@@ -69,8 +70,12 @@ namespace Session03MVCPL.Controllers
             return Details(Id,"Edit");
         }
         [HttpPost]
-        public IActionResult Edit(Department department)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit([FromRoute] int Id ,Department department)
         {
+            if(Id !=department.Id)
+                return BadRequest();
+
             if (!ModelState.IsValid)
                 return View(department);
 
