@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace Session03MVCBLL.Interfaces
 {
-    internal interface IEmployeeRepositories
+    public interface IEmployeeRepositories : IGenaricRepositories<Employee>
     {
-        IEnumerable<Employee> GetAll();
-        Employee GetById(int id);
-        int Add(Employee entity);
-        int Update(Employee entity);
-        int Delete(Employee entity);
+        public IQueryable<Employee> GetByAddress(string address);
     }
 }
