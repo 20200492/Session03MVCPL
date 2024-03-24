@@ -43,6 +43,8 @@ namespace Session03MVCPL
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IDepartmentRepositories, DepartmentRepository>();
+            services.AddScoped<IEmployeeRepositories, EmployeeRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
