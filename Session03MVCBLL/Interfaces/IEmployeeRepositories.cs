@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Session03MVCBLL.Interfaces
 {
-    public interface IDepartmentRepositories:IGenaricRepositories<Department>
+    public interface IEmployeeRepositories : IGenaricRepositories<Employee>
     {
-
+        public IQueryable<Employee> GetByAddress(string address);
     }
 }

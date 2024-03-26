@@ -1,42 +1,37 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Hosting;
 using Session03MVCBLL.Interfaces;
-using Session03MVCBLL.Repositories;
-using Session03MVCEDAL.Data;
 using Session03MVCEDAL.Models;
 using System;
 
 namespace Session03MVCPL.Controllers
 {
-    // Inheritance : DepartmentController is  a Controller
-    // Association : DepartmentController has a IDepartmentRepositories
-    public class DepartmentController : Controller
+    public class EmployeeController : Controller
     {
-        private readonly IDepartmentRepositories _departmentRepo; // Null
+        private readonly IEmployeeRepositories _EmployeeRepo; // Null
         public IWebHostEnvironment _ev { get; }
-        public DepartmentController(IDepartmentRepositories departmentRepo, IWebHostEnvironment ev) // Ask CLR for Creating an Object From Class Implementing IDepartmentRepositories
+        public EmployeeController(IEmployeeRepositories EmployeeRepo, IWebHostEnvironment ev) // Ask CLR for Creating an Object From Class Implementing IEmployeeRepositories
         {
-            _departmentRepo = departmentRepo;
+            _EmployeeRepo = EmployeeRepo;
             _ev = ev;
         }
         public IActionResult Index()
         {
-            var departments = _departmentRepo.GetAll();
-            return View(departments);
+            var Employees = _EmployeeRepo.GetAll();
+            return View(Employees);
         }
-        [HttpGet]
+        //[HttpGet]
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(Employee Employee)
         {
             if (ModelState.IsValid) // Server Side Vaildation
             {
-                var count = _departmentRepo.Add(department);
+                var count = _EmployeeRepo.Add(Employee);
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
@@ -44,17 +39,17 @@ namespace Session03MVCPL.Controllers
             }
             return View();
         }
-        public IActionResult Details(int? Id,string ViewName ="Details")
+        public IActionResult Details(int? Id, string ViewName = "Details")
         {
             if (!Id.HasValue)
                 return BadRequest(); // 400
 
-            var department = _departmentRepo.GetById(Id.Value);
+            var Employee = _EmployeeRepo.GetById(Id.Value);
 
-            if (department is null)
+            if (Employee is null)
                 return NotFound(); // 404
 
-            return View(department);
+            return View(Employee);
         }
 
         [HttpGet]
@@ -62,26 +57,26 @@ namespace Session03MVCPL.Controllers
         {
             ///if(!Id.HasValue)
             ///    return BadRequest();
-            ///var department = _departmentRepo.GetById(Id.Value);
-            ///if(department is null)
+            ///var Employee = _EmployeeRepo.GetById(Id.Value);
+            ///if(Employee is null)
             ///    return NotFound();
-            ///return View(department);
-            
-            return Details(Id,"Edit");
+            ///return View(Employee);
+
+            return Details(Id, "Edit");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int Id ,Department department)
+        public IActionResult Edit([FromRoute] int Id, Employee Employee)
         {
-            if(Id !=department.Id)
+            if (Id != Employee.Id)
                 return BadRequest();
 
             if (!ModelState.IsValid)
-                return View(department);
+                return View(Employee);
 
             try
             {
-                _departmentRepo.Update(department);
+                _EmployeeRepo.Update(Employee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -92,23 +87,23 @@ namespace Session03MVCPL.Controllers
                 if (_ev.IsDevelopment())
                     ModelState.AddModelError(string.Empty, ex.Message);
                 else
-                    ModelState.AddModelError(string.Empty, "An Error Has Occured during Updating the Department");
+                    ModelState.AddModelError(string.Empty, "An Error Has Occured during Updating the Employee");
 
-                return View(department);
+                return View(Employee);
             }
 
         }
-        public IActionResult Delete(int? Id )
+        public IActionResult Delete(int? Id)
         {
             return Details(Id, "Delete");
         }
 
         [HttpPost]
-        public IActionResult Delete(Department department)
+        public IActionResult Delete(Employee Employee)
         {
             try
             {
-                _departmentRepo.Delete(department);
+                _EmployeeRepo.Delete(Employee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -119,10 +114,9 @@ namespace Session03MVCPL.Controllers
                 if (_ev.IsDevelopment())
                     ModelState.AddModelError(string.Empty, ex.Message);
                 else
-                    ModelState.AddModelError(string.Empty, "An Error Has Occured during Updating the Department");
-                return View(department);
+                    ModelState.AddModelError(string.Empty, "An Error Has Occured during Updating the Employee");
+                return View(Employee);
             }
         }
-
     }
 }
