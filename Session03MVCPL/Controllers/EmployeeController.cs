@@ -18,6 +18,12 @@ namespace Session03MVCPL.Controllers
         }
         public IActionResult Index()
         {
+            // 1. ViewData
+            ViewData["Message"] = "Hello ViewData";
+
+            // 2. ViewBag
+            ViewBag.Message = "Hello ViewBag";
+
             var Employees = _EmployeeRepo.GetAll();
             return View(Employees);
         }
