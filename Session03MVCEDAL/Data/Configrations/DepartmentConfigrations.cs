@@ -17,6 +17,11 @@ namespace Session03MVCEDAL.Data.Configrations
             builder.Property(D => D.Id).UseIdentityColumn(10, 10);
             builder.Property(D => D.Code).IsRequired().HasMaxLength(50);
             builder.Property(D => D.Name).IsRequired().HasMaxLength(50);
+
+            builder.HasMany(D => D.Employees)
+                   .WithOne(E =>  E.Department)
+                   .HasForeignKey(E => E.DepartmetId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

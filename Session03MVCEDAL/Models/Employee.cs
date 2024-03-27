@@ -43,5 +43,9 @@ namespace Session03MVCEDAL.Models
         public Gender Gender { get; set; }
         public DateTime CreationDate { get; set; } =DateTime.Now;
 
+        public int? DepartmetId { get; set; }
+
+        public Department Department { get; set; }
+
     }
 }
