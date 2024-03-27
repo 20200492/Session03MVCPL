@@ -38,10 +38,15 @@ namespace Session03MVCPL.Controllers
             if (ModelState.IsValid) // Server Side Vaildation
             {
                 var count = _EmployeeRepo.Add(Employee);
+
+                // 3. TempData
                 if (count > 0)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                    TempData["Message"] = "Employee is created Successfully";
+                else
+                    TempData["Message"] = " An Error Occured, Employee Not Created";
+
+                return RedirectToAction(nameof(Index));
+
             }
             return View();
         }
