@@ -18,13 +18,13 @@ namespace Session03MVCEDAL.Models
     public class Employee : ModelBase
     {
         [Required]
-        [MaxLength(50, ErrorMessage = "Max Length of Name is 50 Chars")]
-        [MinLength(50, ErrorMessage = "Min Length of Name is 50 Chars")]
+        [MaxLength(10, ErrorMessage = "Max Length of Name is 50 Chars")]
+        [MinLength(10, ErrorMessage = "Min Length of Name is 10 Chars")]
         public string Name { get; set; }
         [Range(22, 30)]
         public int Age { get; set; }
 
-        [RegularExpression(@"^\d+\s[A-z]+\s[A-z]+$")]
+        //[RegularExpression(@"^\d+\s[A-z]+\s[A-z]+$")]
         public string Address { get; set; }
 
         [DataType(DataType.Currency)]
