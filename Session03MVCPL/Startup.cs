@@ -43,6 +43,8 @@ namespace Session03MVCPL
             
             services.AddScoped<IDepartmentRepositories, DepartmentRepository>();
             services.AddScoped<IEmployeeRepositories, EmployeeRepository>();
+
+            services.AutoMapper(M => M.AddProfile(new MappingProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

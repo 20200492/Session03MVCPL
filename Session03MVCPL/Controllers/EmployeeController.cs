@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Session03MVCBLL.Interfaces;
 using Session03MVCEDAL.Models;
+using Session03MVCPL.ViewModel;
 using System;
 using System.Linq;
 
@@ -10,12 +12,14 @@ namespace Session03MVCPL.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly IMapper mapper;
         private readonly IEmployeeRepositories _EmployeeRepo; // Null
         public IWebHostEnvironment _ev { get; }
         public IDepartmentRepositories _departmentRepos { get; }
 
-        public EmployeeController(IEmployeeRepositories EmployeeRepo, IWebHostEnvironment ev,IDepartmentRepositories _departmentsRepo) // Ask CLR for Creating an Object From Class Implementing IEmployeeRepositories
+        public EmployeeController(IMapper mapper,IEmployeeRepositories EmployeeRepo, IWebHostEnvironment ev,IDepartmentRepositories _departmentsRepo) // Ask CLR for Creating an Object From Class Implementing IEmployeeRepositories
         {
+            this.mapper = mapper;
             _EmployeeRepo = EmployeeRepo;
             _ev = ev;
             _departmentRepos = _departmentsRepo;
@@ -43,12 +47,12 @@ namespace Session03MVCPL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Employee Employee)
+        public IActionResult Create(Employee employeeModel)
         {
             if (ModelState.IsValid) // Server Side Vaildation
             {
-                var count = _EmployeeRepo.Add(Employee);
-
+                var mappedEmp = mapper.Map<EmployeeViewModel,Employee>(employeeModel);
+                var count = _EmployeeRepo.Add(employeeModel);
                 // 3. TempData
                 if (count > 0)
                     TempData["Message"] = "Employee is created Successfully";
