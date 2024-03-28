@@ -11,10 +11,13 @@ namespace Session03MVCPL.Controllers
     {
         private readonly IEmployeeRepositories _EmployeeRepo; // Null
         public IWebHostEnvironment _ev { get; }
-        public EmployeeController(IEmployeeRepositories EmployeeRepo, IWebHostEnvironment ev) // Ask CLR for Creating an Object From Class Implementing IEmployeeRepositories
+        public IDepartmentRepositories _departmentRepos { get; }
+
+        public EmployeeController(IEmployeeRepositories EmployeeRepo, IWebHostEnvironment ev,IDepartmentRepositories _departmentsRepo) // Ask CLR for Creating an Object From Class Implementing IEmployeeRepositories
         {
             _EmployeeRepo = EmployeeRepo;
             _ev = ev;
+            _departmentRepos = _departmentsRepo;
         }
         public IActionResult Index()
         {
@@ -30,6 +33,7 @@ namespace Session03MVCPL.Controllers
         //[HttpGet]
         public IActionResult Create()
         {
+            //ViewData["Departments"] = _departmentRepos.GetAll();
             return View();
         }
         [HttpPost]
@@ -72,7 +76,8 @@ namespace Session03MVCPL.Controllers
             ///if(Employee is null)
             ///    return NotFound();
             ///return View(Employee);
-
+            
+            //ViewBag.Departments = _departmentRepos.GetAll();
             return Details(Id, "Edit");
         }
         [HttpPost]
