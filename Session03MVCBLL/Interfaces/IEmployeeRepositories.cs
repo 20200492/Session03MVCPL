@@ -10,5 +10,7 @@ namespace Session03MVCBLL.Interfaces
     public interface IEmployeeRepositories : IGenaricRepositories<Employee>
     {
         public IQueryable<Employee> GetByAddress(string address);
+
+        public IQueryable<Employee> SearchByName(string name);
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Session03MVCBLL.Interfaces;
 using Session03MVCEDAL.Models;
 using System;
+using System.Linq;
 
 namespace Session03MVCPL.Controllers
 {
@@ -19,16 +20,21 @@ namespace Session03MVCPL.Controllers
             _ev = ev;
             _departmentRepos = _departmentsRepo;
         }
-        public IActionResult Index()
+        public IActionResult Index(string searchInput)
         {
-            // 1. ViewData
-            ViewData["Message"] = "Hello ViewData";
+            //// 1. ViewData
+            //ViewData["Message"] = "Hello ViewData";
 
-            // 2. ViewBag
-            ViewBag.Message = "Hello ViewBag";
+            //// 2. ViewBag
+            //ViewBag.Message = "Hello ViewBag";
+            var employees = Enumerable.Empty<Employee>();
 
-            var Employees = _EmployeeRepo.GetAll();
-            return View(Employees);
+            if (string.IsNullOrEmpty(searchInput))
+                employees = _EmployeeRepo.GetAll();
+            else
+                employees = _EmployeeRepo.SearchByName(searchInput.ToLower());
+
+            return View(employees);
         }
         //[HttpGet]
         public IActionResult Create()
