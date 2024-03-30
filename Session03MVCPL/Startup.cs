@@ -44,6 +44,8 @@ namespace Session03MVCPL
             services.AddScoped<IDepartmentRepositories, DepartmentRepository>();
             services.AddScoped<IEmployeeRepositories, EmployeeRepository>();
 
+            services.AddScoped<IUnitOfWork,UnitOfWork>
+
             services.AutoMapper(M => M.AddProfile(new MappingProfile));
         }
 

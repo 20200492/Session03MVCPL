@@ -12,17 +12,17 @@ namespace Session03MVCPL.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
         private readonly IEmployeeRepositories _EmployeeRepo; // Null
         public IWebHostEnvironment _ev { get; }
         public IDepartmentRepositories _departmentRepos { get; }
 
-        public EmployeeController(IMapper mapper,IEmployeeRepositories EmployeeRepo, IWebHostEnvironment ev,IDepartmentRepositories _departmentsRepo) // Ask CLR for Creating an Object From Class Implementing IEmployeeRepositories
+        public EmployeeController(IUnitOfWork unitOfWork,IMapper mapper IWebHostEnvironment ev) // Ask CLR for Creating an Object From Class Implementing IEmployeeRepositories
         {
+            _unitOfWork = unitOfWork;
             this.mapper = mapper;
-            _EmployeeRepo = EmployeeRepo;
             _ev = ev;
-            _departmentRepos = _departmentsRepo;
         }
         public IActionResult Index(string searchInput)
         {
@@ -34,9 +34,9 @@ namespace Session03MVCPL.Controllers
             var employees = Enumerable.Empty<Employee>();
 
             if (string.IsNullOrEmpty(searchInput))
-                employees = _EmployeeRepo.GetAll();
+                employees = _unitOfWork.EmployeeRepository.GetAll();
             else
-                employees = _EmployeeRepo.SearchByName(searchInput.ToLower());
+                employees = _unitOfWork.EmployeeRepository.SearchByName(searchInput.ToLower());
 
             return View(employees);
         }
@@ -52,12 +52,18 @@ namespace Session03MVCPL.Controllers
             if (ModelState.IsValid) // Server Side Vaildation
             {
                 var mappedEmp = mapper.Map<EmployeeViewModel,Employee>(employeeModel);
-                var count = _EmployeeRepo.Add(employeeModel);
+                var count = _unitOfWork.EmployeeRepository.Add(employeeModel);
                 // 3. TempData
                 if (count > 0)
                     TempData["Message"] = "Employee is created Successfully";
                 else
                     TempData["Message"] = " An Error Occured, Employee Not Created";
+
+          
+                // 2. Update Employee
+
+                // 3. Delete Employee
+          
 
                 return RedirectToAction(nameof(Index));
 
@@ -69,7 +75,7 @@ namespace Session03MVCPL.Controllers
             if (!Id.HasValue)
                 return BadRequest(); // 400
 
-            var Employee = _EmployeeRepo.GetById(Id.Value);
+            var Employee = _unitOfWork.EmployeeRepository.GetById(Id.Value);
 
             if (Employee is null)
                 return NotFound(); // 404
@@ -102,7 +108,8 @@ namespace Session03MVCPL.Controllers
 
             try
             {
-                _EmployeeRepo.Update(Employee);
+                _unitOfWork.EmployeeRepository.Update(Employee);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -129,7 +136,8 @@ namespace Session03MVCPL.Controllers
         {
             try
             {
-                _EmployeeRepo.Delete(Employee);
+                _unitOfWork.EmployeeRepository.Delete(Employee);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
