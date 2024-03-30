@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Session03MVCEDAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,7 @@ namespace Session03MVCBLL.Interfaces
 {
     public interface IUnitOfWork :IDisposable
     {
-        public IEmployeeRepositories EmployeeRepository { get; set; }
-        public IDepartmentRepositories DepartmentRepository { get; set; }
-
+        IGenaricRepositories<T> Repository<T>() where T : ModelBase;
         int Complete();
 
     }

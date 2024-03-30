@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Session03MVCBLL.Interfaces;
+using Session03MVCBLL.Repositories;
 using Session03MVCEDAL.Models;
 using Session03MVCPL.ViewModel;
 using System;
@@ -32,11 +33,12 @@ namespace Session03MVCPL.Controllers
             //// 2. ViewBag
             //ViewBag.Message = "Hello ViewBag";
             var employees = Enumerable.Empty<Employee>();
+            var employeeRepo = _unitOfWork.Repository<Employee>() as EmployeeRepository;
 
             if (string.IsNullOrEmpty(searchInput))
-                employees = _unitOfWork.EmployeeRepository.GetAll();
+                employees = _unitOfWork.Repository<Employee>().GetAll();
             else
-                employees = _unitOfWork.EmployeeRepository.SearchByName(searchInput.ToLower());
+                employees = employeeRepo.SearchByName(searchInput.ToLower());
 
             return View(employees);
         }
@@ -52,12 +54,12 @@ namespace Session03MVCPL.Controllers
             if (ModelState.IsValid) // Server Side Vaildation
             {
                 var mappedEmp = mapper.Map<EmployeeViewModel,Employee>(employeeModel);
-                var count = _unitOfWork.EmployeeRepository.Add(employeeModel);
+                _unitOfWork.Repository<Employee>().Add(employeeModel);
                 // 3. TempData
-                if (count > 0)
-                    TempData["Message"] = "Employee is created Successfully";
-                else
-                    TempData["Message"] = " An Error Occured, Employee Not Created";
+                //if (count > 0)
+                //    TempData["Message"] = "Employee is created Successfully";
+                //else
+                //    TempData["Message"] = " An Error Occured, Employee Not Created";
 
           
                 // 2. Update Employee
@@ -75,7 +77,7 @@ namespace Session03MVCPL.Controllers
             if (!Id.HasValue)
                 return BadRequest(); // 400
 
-            var Employee = _unitOfWork.EmployeeRepository.GetById(Id.Value);
+            var Employee = _unitOfWork.Repository<Employee>().GetById(Id.Value);
 
             if (Employee is null)
                 return NotFound(); // 404
@@ -108,7 +110,7 @@ namespace Session03MVCPL.Controllers
 
             try
             {
-                _unitOfWork.EmployeeRepository.Update(Employee);
+                _unitOfWork.Repository<Employee>().Update(Employee);
                 _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
@@ -136,7 +138,7 @@ namespace Session03MVCPL.Controllers
         {
             try
             {
-                _unitOfWork.EmployeeRepository.Delete(Employee);
+                _unitOfWork.Repository<Employee>().Delete(Employee);
                 _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
