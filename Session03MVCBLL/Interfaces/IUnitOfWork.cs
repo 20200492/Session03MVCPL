@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Session03MVCBLL.Interfaces
 {
-    public interface IEmployeeRepositories : IGenaricRepositories<Employee>
+    public interface IUnitOfWork :IDisposable
     {
-        public IQueryable<Employee> GetByAddress(string address);
+        IGenaricRepositories<T> Repository<T>() where T : ModelBase;
+        int Complete();
 
-        public IQueryable<Employee> SearchByName(string name);
     }
 }

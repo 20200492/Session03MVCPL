@@ -22,8 +22,6 @@ namespace Session03MVCPL
         {
             Configuration = configuration;
         }
-
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -41,10 +39,14 @@ namespace Session03MVCPL
             services.AddDbContext<DbContextApplications>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+            },ServiceLifetime.Scoped);
+            
             services.AddScoped<IDepartmentRepositories, DepartmentRepository>();
             services.AddScoped<IEmployeeRepositories, EmployeeRepository>();
 
+            services.AddScoped<IUnitOfWork,UnitOfWork>
+
+            services.AutoMapper(M => M.AddProfile(new MappingProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

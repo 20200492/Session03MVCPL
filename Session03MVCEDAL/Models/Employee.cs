@@ -10,10 +10,15 @@ namespace Session03MVCEDAL.Models
 {
     public enum Gender
     {
-        [EnumMember(Value ="Male")]
+        [EnumMember(Value = "Male")]
         Male = 1,
         [EnumMember(Value = "Female")]
         Female = 2
+    }
+    public enum EmpType
+    {
+        FullTime = 1,
+        PartTime = 2
     }
     public class Employee : ModelBase
     {
@@ -32,16 +37,21 @@ namespace Session03MVCEDAL.Models
 
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
-        [EmailAddress]
+        [EmailAddress] // For Validation
+        [DataType(DataType.EmailAddress)] // For Formating
         public string Email { get; set; }
         [Display(Name = "Phone Number")]
-        [Phone]
+        [Phone] // For Validation
+        [DataType(DataType.PhoneNumber)] // For Formating
         //[DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
         [Display(Name = "Hiring Date")]
         public DateTime HiringDate { get; set; }
         public Gender Gender { get; set; }
-        public DateTime CreationDate { get; set; } =DateTime.Now;
+        public EmpType Type { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public int? DepartmetId { get; set; }
+        public Department Department { get; set; }
 
     }
 }

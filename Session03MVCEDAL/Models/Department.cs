@@ -14,5 +14,7 @@ namespace Session03MVCEDAL.Models
         //[Required] // We Don't Write Data Annotation But We Write Fluent API
         public string Name { get; set; }
         public DateTime DateOfCreation { get; set; }
+
+        public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
     }
 }
